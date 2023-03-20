@@ -13,6 +13,7 @@ PROGRAMME = (
     ('postgraduate','Postgraduate')
              )
 
+
 class Faculty(models.Model):
     name = models.CharField(max_length=100)
     
@@ -29,13 +30,12 @@ class Department(models.Model):
 
 
 
-
 class Programme(models.Model):
     years = models.IntegerField()
     programme_type = models.CharField(max_length=30,choices=PROGRAMME)
     department = models.ForeignKey(Department,on_delete=models.CASCADE,related_name="programmes")
     degree = models.CharField(max_length=150)
-    # degree = models. MSC |PHD|MPhil|PGDip
+    # degree = MSC |PHD|MPhil|PGDip
     
     def __str__(self) -> str:
         return self.programme_type
@@ -55,4 +55,9 @@ class Course(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
+       
+class Session(models.Model):
+    start_year = models.DateField()
+    end_year = models.DateField()
     

@@ -18,6 +18,7 @@ class Registration(models.Model):
 class CourseRegistration(models.Model):
     course = models.ForeignKey(Course,on_delete=models.CASCADE,related_name="registration")
     registration = models.ForeignKey(Registration,on_delete=models.CASCADE,related_name="courses")
+    # grade = models.OneToOneField()
     
     class Meta:
         constraints = models.UniqueConstraint(fields=['course', 'registration'],name="a registration cannot the same course")
