@@ -8,6 +8,7 @@ class BiodataSerializer():
             fields = '__all__'
 
 class StudentSerializer(serializers.ModelSerializer):
+    matric_no = serializers.ReadOnlyField()
     biodata = BiodataSerializer()
     class Meta:
         model = Student

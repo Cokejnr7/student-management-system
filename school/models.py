@@ -35,10 +35,9 @@ class Programme(models.Model):
     programme_type = models.CharField(max_length=30,choices=PROGRAMME)
     department = models.ForeignKey(Department,on_delete=models.CASCADE,related_name="programmes")
     degree = models.CharField(max_length=150)
-    # degree = MSC |PHD|MPhil|PGDip
-    
+   
     def __str__(self) -> str:
-        return self.programme_type
+        return f'{self.programme_type} ({self.degree})'
     
 
 

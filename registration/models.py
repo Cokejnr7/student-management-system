@@ -1,5 +1,6 @@
 from django.db import models
-from student.models import Course,Student
+from student.models import Student
+from school.models import Course
 
 # Create your models here.
 
@@ -11,8 +12,8 @@ SEMESTER = (
 
 class Registration(models.Model):
     semester = models.CharField(max_length=20,choices=SEMESTER)
-    session = models.CharField()
-    student =  models.ForeignKey(Student,on_delete=models.CASCADE,related_name="registrations")
+    # session = models.CharField()
+    # student =  models.ForeignKey(Student,on_delete=models.CASCADE,related_name="registrations")
     
     
 class CourseRegistration(models.Model):
@@ -21,4 +22,4 @@ class CourseRegistration(models.Model):
     # grade = models.OneToOneField()
     
     class Meta:
-        constraints = models.UniqueConstraint(fields=['course', 'registration'],name="a registration cannot the same course")
+        unique_together = ['course','registration']
