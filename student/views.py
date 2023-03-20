@@ -23,9 +23,9 @@ class StudentCreateView(generics.GenericAPIView):
             return Response({"detail":"Biodata not provided."},status=status.HTTP_400_BAD_REQUEST)
         
         
-        student_data = json.loads(data.get("student")[0])
-        biodata = json.loads(data.get("biodata")[0])
-        print(student_data)
+        # student_data = json.loads(data.get("student")[0])
+        # biodata = json.loads(data.get("biodata")[0])
+        print(data)
         
         return Response("hello",status=status.HTTP_201_CREATED)
         

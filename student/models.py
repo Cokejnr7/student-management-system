@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime as dt
 from school.models import Faculty,Department,Programme
 from django.core.validators import RegexValidator
+from .validators import is_image,check_size
 # Create your models here.
 
 
@@ -19,7 +20,7 @@ TITLE = (
 
 class Student(models.Model):
     matric_no = models.CharField(max_length=50,blank=True)
-    passport_img = models.ImageField(upload_to = "passport/%Y/%m/%d")
+    passport_img = models.ImageField(upload_to = "passport/%Y/%m/%d",validators=[is_image,check_size])
     created_at = models.DateTimeField(auto_now_add=True)
     faculty = models.ForeignKey(Faculty,on_delete=models.CASCADE)
     department = models.ForeignKey(Department,on_delete=models.CASCADE)
