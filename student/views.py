@@ -15,14 +15,8 @@ class StudentCreateView(generics.GenericAPIView):
         
         #expecting dictionary with student and biodata key
         data = dict(request.data)
-        
-        if data.get("student") is None:
-            return Response({"detail":"Student not provided."},status=status.HTTP_400_BAD_REQUEST)
-        
-        if data.get("biodata") is None:
-            return Response({"detail":"Biodata not provided."},status=status.HTTP_400_BAD_REQUEST)
-        
-        
+        data = {key:value[0] for key,value in data.items()}
+    
         # student_data = json.loads(data.get("student")[0])
         # biodata = json.loads(data.get("biodata")[0])
         print(data)

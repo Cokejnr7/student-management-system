@@ -20,6 +20,9 @@ TITLE = (
 
 class Student(models.Model):
     matric_no = models.CharField(max_length=50,blank=True)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.EmailField(unique=True)
     passport_img = models.ImageField(upload_to = "passport/%Y/%m/%d",validators=[is_image,check_size])
     created_at = models.DateTimeField(auto_now_add=True)
     faculty = models.ForeignKey(Faculty,on_delete=models.CASCADE)
@@ -44,8 +47,8 @@ class Student(models.Model):
 
 class Biodata(models.Model):
     owner = models.OneToOneField(Student,on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=150)
-    last_name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=150,blank=True)
+    last_name = models.CharField(max_length=150,blank=True)
     middle_name = models.CharField(max_length=150)
     title = models.CharField(max_length=200,choices=TITLE)
     gender = models.CharField(max_length=50,choices=GENDER)
@@ -54,7 +57,7 @@ class Biodata(models.Model):
     local_government = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     religion = models.CharField(max_length=50)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True,blank=True)
     phone_number = models.CharField(max_length=15,validators=[RegexValidator(r'^\d{11,15}$')])
     next_of_kin = models.CharField(max_length=100)
     kin_phone_number = models.CharField(max_length=15,validators=[RegexValidator(r'^\d{11,15}$')])
@@ -63,3 +66,11 @@ class Biodata(models.Model):
     
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}'
+    
+    def save(self,*args, **kwargs):
+        if self.owner:
+            self.first_name = self.owner.first_name
+            self.last_name = self.owner.last_name
+            self.email = self.owner.email
+        
+        super().save(self,*args, **kwargs)

@@ -24,6 +24,7 @@ class Faculty(models.Model):
 class Department(models.Model):
     name = models.CharField(max_length=100)
     faculty = models.ForeignKey(Faculty,on_delete=models.CASCADE,related_name="departments")
+    abbv = models.CharField(max_length=3,null=True)
     
     def __str__(self) -> str:
         return self.name
@@ -44,7 +45,8 @@ class Programme(models.Model):
 class Course(models.Model):
     title = models.CharField(max_length=100)
     department = models.ForeignKey(Department,on_delete=models.CASCADE,related_name="courses")
-    code = models.CharField(max_length=20)
+    programme = models.ForeignKey(Programme,on_delete=models.CASCADE,related_name="courses")
+    code = models.CharField(max_length=3)
     semester = models.CharField(max_length=15,choices=SEMESTER, default=SEMESTER[0][0])
     level = models.IntegerField()
     unit = models.IntegerField()
@@ -53,7 +55,9 @@ class Course(models.Model):
     instructor = models.CharField(max_length=100)
     
     def __str__(self) -> str:
-        return self.name
+        if self.department.abbv:
+            return f'{self.department.abbv} {self.code}'
+        return self.code
     
        
 class Session(models.Model):
