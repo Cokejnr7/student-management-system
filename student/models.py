@@ -12,9 +12,9 @@ GENDER = (
 )
 
 TITLE = (
-    ('MR','mister'),
-    ('MRS','missus'),
-    ('MISS', 'misses')
+    ('MR','mr'),
+    ('MRS','mrs'),
+    ('MISS', 'miss')
 )
 
 
@@ -38,7 +38,7 @@ class Student(models.Model):
             total = Student.objects.filter(department=self.department,created_at = self.created_at).count()+1
             self.matric_no  = year + faculty + department + str(total)
                  
-        super().save(self,*args, **kwargs)
+        super(Student,self).save(*args,**kwargs)
         
     
     def __str__(self) -> str:
@@ -46,7 +46,7 @@ class Student(models.Model):
 
 
 class Biodata(models.Model):
-    owner = models.OneToOneField(Student,on_delete=models.CASCADE)
+    owner = models.OneToOneField(Student,on_delete=models.CASCADE,related_name="biodata")
     first_name = models.CharField(max_length=150,blank=True)
     last_name = models.CharField(max_length=150,blank=True)
     middle_name = models.CharField(max_length=150)
@@ -57,15 +57,12 @@ class Biodata(models.Model):
     local_government = models.CharField(max_length=100)
     address = models.CharField(max_length=200)
     religion = models.CharField(max_length=50)
-    email = models.EmailField(unique=True,blank=True)
+    email = models.EmailField(blank=True)
     phone_number = models.CharField(max_length=15,validators=[RegexValidator(r'^\d{11,15}$')])
     next_of_kin = models.CharField(max_length=100)
     kin_phone_number = models.CharField(max_length=15,validators=[RegexValidator(r'^\d{11,15}$')])
     name_of_sponsor = models.CharField(max_length=100)
     sponsor_address = models.CharField(max_length=200)
-    
-    def __str__(self) -> str:
-        return f'{self.first_name} {self.last_name}'
     
     def save(self,*args, **kwargs):
         if self.owner:
@@ -73,4 +70,8 @@ class Biodata(models.Model):
             self.last_name = self.owner.last_name
             self.email = self.owner.email
         
-        super().save(self,*args, **kwargs)
+        super(Biodata,self).save(*args,**kwargs)
+        
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.last_name}'
+    
